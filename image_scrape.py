@@ -6,6 +6,12 @@ from urlparse import urljoin
 import os
 import exifread
 
+import datetime
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from table_def import Image
+
+
 #since we are ignoring SSL certificate errors with verify=False, we silence the important yet annoying log messages
 requests.packages.urllib3.disable_warnings()
 
@@ -35,7 +41,7 @@ def save_image(url):
     with open(os.path.join(SAVE_DIR, fname), "wb") as content:
         content.write(req.content)
 
-    if get_exif_data(os.path.join(SAVE_DIR, fname)):
+    if get_exif_data(os.path.join(SAVE_DIR, fname), url):
         return True
     else:
         # No EXIF data available :-(
@@ -43,15 +49,25 @@ def save_image(url):
         return False
 
 
-def get_exif_data(fname):
+def get_exif_data(fname, url):
 
     keys = ['GPS GPSLongitude', 'GPS GPSLatitude', 'EXIF ExifImageLength', 'EXIF ExifImageWidth', 'EXIF DateTimeOriginal']
     with open(fname, 'r') as fimage:
         tags = exifread.process_file(fimage)
         if set(keys).issubset(tags):  # make sure all the EXIF tags we need are stored in the image
-            # we can write the EXIF data to the database here
-            for key in keys:
-                print "Key: %s, value %s" % (key, tags[key])
+
+            image = Image(sourceUrl=url,
+              dateRetreived=datetime.datetime.now(),
+              latitude=str(tags['GPS GPSLatitude'].values),
+              longitude=str(tags['GPS GPSLongitude'].values),
+              imageDate=datetime.datetime.strptime(tags['EXIF DateTimeOriginal'].values,'%Y:%m:%d %H:%M:%S'),
+              imageHeight=tags['EXIF ExifImageLength'].values[0],
+              imageWidth=tags['EXIF ExifImageWidth'].values[0],
+              imageFile=url.split('/')[-1])
+
+            # Add the new record to the DB session object
+            session.add(image)
+
             return True
         else:
             return False
@@ -79,7 +95,19 @@ def main():
 
 
 if __name__ == "__main__":
+    # Fire up the database
+    engine = create_engine('sqlite:///images.db', echo=True)
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
     imageList = []
-    main()
+    try:
+        main()
+        session.commit()
+    finally:
+       # DB cleanup
+        session.close()
+
     print('Image Count: {0}'.format(len(imageList)))
+
 
