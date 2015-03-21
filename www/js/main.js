@@ -1,4 +1,5 @@
 // Create a map variable using Leaflet
+// Set the View to center on California
 var map = L.map('map').setView([37.10, -120.58], 6);
 
 /**
