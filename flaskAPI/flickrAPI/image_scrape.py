@@ -13,7 +13,10 @@ from table_def import Image
 
 
 class ImageScraper:
-
+    def __init__(self):
+        self.engine = create_engine('sqlite:///images.db', echo=True)
+        Session = sessionmaker(bind=self.engine)
+        self.session = Session()
     # since we are ignoring SSL certificate errors with verify=False, we silence
     # the important yet annoying log messages
     requests.packages.urllib3.disable_warnings()
@@ -75,11 +78,17 @@ class ImageScraper:
                               imageFile=url.split('/')[-1])
 
                 # Add the new record to the DB session object
-                session.add(image)
+                self.session.add(image)
 
                 return True
             else:
                 return False
+
+    def commitObject(self):
+        self.session.commit()
+
+    def closeSession(self):
+        self.session.close()
 
     def main(self):
 
@@ -105,18 +114,13 @@ class ImageScraper:
 
 
 if __name__ == "__main__":
-    # Fire up the database
-    engine = create_engine('sqlite:///images.db', echo=True)
-    Session = sessionmaker(bind=engine)
-    session = Session()
-
     imageList = []
     try:
         imageScraper = ImageScraper()
         imageScraper.main()
-        session.commit()
+        imageScraper.session.commit()
     finally:
         # DB cleanup
-        session.close()
+        imageScraper.session.close()
 
     print('Image Count: {0}'.format(len(imageList)))
