@@ -12,6 +12,10 @@ pip install html5lib
 pip install exifread
 pip install sqlalchemy
 ```
+Or use the requirements.txt file with pip:
+```
+pip install -r requirements.txt
+```
 
 
 Additional Info
