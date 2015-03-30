@@ -1,11 +1,13 @@
+from ConfigParser import SafeConfigParser
 import flickrapi
 import image_scrape
 
-
 class FlickrAPI:
     def __init__(self):
-        self.api_key = u'YOUR API KEY'
-        self.api_secret = u'YOUR API SECRET'
+        self.parser = SafeConfigParser()
+        self.parser.read('config.ini')
+        self.api_key = self.parser.get('flickrAPI', 'key') 
+        self.api_secret = self.parser.get('flickrAPI', 'secret')
 
     def main(self):
         flickr = flickrapi.FlickrAPI(self.api_key, self.api_secret, format='parsed-json')
@@ -18,7 +20,7 @@ class FlickrAPI:
             extras="original_format"
         )
         context = photos["photos"]["photo"]
-        for photo in range(len(context)):
+        for photo in range(len(photos["photos"]["photo"])):
             innerContext = context[photo]
             farmID = innerContext["farm"]
             serverID = innerContext["server"]
