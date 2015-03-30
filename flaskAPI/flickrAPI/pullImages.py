@@ -1,6 +1,7 @@
 import flickrapi
 import image_scrape
 
+
 class FlickrAPI:
     def __init__(self):
         self.api_key = u'YOUR API KEY'
@@ -17,7 +18,7 @@ class FlickrAPI:
             extras="original_format"
         )
         context = photos["photos"]["photo"]
-        for photo in range(len(photos["photos"]["photo"])):
+        for photo in range(len(context)):
             innerContext = context[photo]
             farmID = innerContext["farm"]
             serverID = innerContext["server"]
