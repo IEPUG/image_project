@@ -21,7 +21,7 @@ Authentication
 ---------------
 In order to pull images from the Flickr API, you need to first register as a developer at https://www.flickr.com/services/developer/api/
 
-After you do that, with your favorite text editor, open flickrAPI/config.ini, and insert your API key and secret that was given to you.
+After you do that, with your favorite text editor, open flaskAPI/flickrAPI/config.ini, and insert your API key and secret that was given to you.
 
 Additional Info
 ---------------
