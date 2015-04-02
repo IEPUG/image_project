@@ -1,10 +1,12 @@
 from flask import Flask
 from flask_restful import reqparse, Api, Resource
+from flask_restful.utils import cors
 from flask.json import JSONEncoder
 import queryImages
 
 app = Flask(__name__)
 api = Api(app)
+api.decorators=[cors.crossdomain(origin='*')]
 
 
 @app.route("/")
