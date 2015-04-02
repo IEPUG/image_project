@@ -9,7 +9,9 @@ api = Api(app)
 
 @app.route("/")
 def hello():
-    return "Hello from plain old flask"
+    return """Hello from plain old flask.<br><br>
+    This isn't the api you are looking for.<br>
+    Try <a href="http://127.0.0.1:5000/api/v1/images/">/api/v1/images</a>"""
 
 class APIRoot(Resource):
     def get(self):
