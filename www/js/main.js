@@ -37,20 +37,22 @@ function convertStringGeoCoords(coords){
 	// expect coords of format "[33, 25, 7717/500]"
 	// trim off the [] values & split on the comma
 	var coordElements = coords.replace('[', '').replace(']', '').split(",");
-	// convert values to numbers
-	var degrees = new Number(coordElements[0]);
-	var minutes = new Number(coordElements[1]);
+	// convert values to numbers using built-in parseInt() function.
+	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/parseInt
+	var degrees = parseInt(coordElements[0], 10);
+	var minutes = parseInt(coordElements[1], 10);
 
-	// should check IF rawSeconds contains '/' first
-	var rawSeconds = coordElements[2].split('/');
-	var numerator = new Number(rawSeconds[0]);
-	var denominator = new Number(rawSeconds[1]);
-	var seconds = numerator / denominator
+	// IF the seconds element contains '/' convert fraction to decimal seconds
+	if (coordElements[2].match('\/') != null) {
+		var rawSeconds = coordElements[2].split('/');
+		var numerator = new Number(rawSeconds[0]);
+		var denominator = new Number(rawSeconds[1]);
+		var seconds = numerator / denominator
+	} else {
+		var seconds = new Number(coordElements[2]);
+	}
 
-	var geoCoords = [degrees, minutes, seconds]
-	return geoCoords
-
-	// push onto the returned array
+ 	return [degrees, minutes, seconds]
 }
 
 
