@@ -28,7 +28,11 @@ function MapImage(id, lat, lon) {
 	this.lon = lon;
 };
 
-function dmsToDecimalDegrees(deg, min, sec){
+function dmsToDecimalDegrees(dms){
+	// dms is an array of degrees, minutes, seconds
+	var deg = dms[0],
+		min = dms[1],
+		sec = dms[2];
 	var decimalDegrees = deg + min/60 + sec/3600
 	return decimalDegrees
 }
@@ -68,6 +72,15 @@ var app = {
 
 	},
 
+	convertDataToImage : function(dataObject){
+		var dataId = dataObject.id;
+		var latitude = dmsToDecimalDegrees(convertStringGeoCoords(dataObject.latitude));
+		var longitude = dmsToDecimalDegrees(convertStringGeoCoords(dataObject.longitude));
+
+		return new MapImage(dataId, latitude, longitude);
+
+	},
+
 	dropMarkers : function(){
 		//Loop over the images array and insert a marker on the map
 	},
@@ -79,7 +92,9 @@ var app = {
 			// Save Objects into the app.images array
 			for (var i=0; i < data.images.length; i++){
 
-				app.images.push(data.images[i]);
+				app.images.push(
+					app.convertDataToImage(data.images[i])
+					);
 			}
 			console.log("Loaded "+app.images.length+" from the server.");
 
