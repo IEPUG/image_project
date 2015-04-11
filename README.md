@@ -6,11 +6,17 @@ image_project
 
 To install the module dependecies use the following (from within your virtual environment!):
 ```
+# Scraping and ORM Modules
 pip install requests
 pip install beautifulsoup4
 pip install html5lib
 pip install exifread
 pip install sqlalchemy
+
+# Flickr and Flask Modules
+pip install flickrapi
+pip install flask
+pip install flask-restful
 ```
 Or use the requirements.txt file with pip:
 ```
