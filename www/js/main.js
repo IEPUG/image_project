@@ -72,8 +72,14 @@ var app = {
 
 	},
 
+	createRelativeImage : function(remoteUrl){
+		var localPath = "../flaskAPI/flickrAPI/images/";
+
+	},
+
 	createPopup : function(jsonData){
-		var imgSrc = jsonData.sourceUrl;
+		//var imgSrc = jsonData.sourceUrl;
+		var localImg = app.createRelativeImage(jsonData.sourceUrl);
 		// Image Details
 		var htmlString = "<div> \
 			<ul> \
