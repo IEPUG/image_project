@@ -1,6 +1,6 @@
 // Create a map variable using Leaflet
-// Set the View to center on California
-var map = L.map('map').setView([37.10, -120.58], 6);
+// Set the View to center just above Africa
+var map = L.map('map').setView([30, 0], 2);
 
 /**
  -- Establishing a connection to the Mapbox Tile Server --
@@ -62,13 +62,31 @@ function convertStringGeoCoords(coords){
 
 var app = {
 
+	url : "http://127.0.0.1:5000/api/v1/images/",
+
 	images : [],
 
 	init : function(){
 
 		app.getAllImages();
-		app.dropMarkers();
 
+	},
+
+	createPopup : function(jsonData){
+		var imgSrc = jsonData.sourceUrl;
+		// Image Details
+		var htmlString = "<div> \
+			<ul> \
+			 	<li>Image Date: "+jsonData.imageDate+"</li> \
+				<li>Height: "+jsonData.imageHeight+"</li> \
+				<li>Width: "+jsonData.imageWidth+"</li> \
+				<li><a href="+imgSrc+"> \
+					<img src="+imgSrc+" height=\"200\" width=\"200\"></li> \
+					</a> \
+			</ul> \
+			</div>"
+
+		return htmlString
 
 	},
 
@@ -82,13 +100,37 @@ var app = {
 	},
 
 	dropMarkers : function(){
+
 		//Loop over the images array and insert a marker on the map
+		for (var i=0; i < app.images.length; i++){
+			// Must use a closure to guard against variable hoisting
+			// http://stackoverflow.com/questions/19586137/addeventlistener-using-for-loop-and-passing-values
+			(function() {
+				var img = app.images[i];
+				// Setup marker options with JSON
+				var options = {"title" : "Simple marker, click for more info on ID# "+img.id,
+							   "riseOnHover" : true,
+							   "recordId" : img.id};
+
+				L.marker([img.lat, img.lon], options)
+					.bindPopup()
+					.addEventListener('click', function(e){
+						var that = this;
+						$.post(app.url, {"id" : img.id}, function(data){
+
+							console.log(img.id);
+							that.setPopupContent(app.createPopup(data[img.id]));
+
+						})
+					})
+					.addTo(map);
+			}())
+		}
 	},
 
 	getAllImages : function() {
 		// GET url to fetch simple object with all images in an array
-		var url = "http://127.0.0.1:5000/api/v1/images/";
-		$.getJSON(url, function(data){
+		$.getJSON(app.url, function(data){
 			// Save Objects into the app.images array
 			for (var i=0; i < data.images.length; i++){
 
@@ -97,6 +139,7 @@ var app = {
 					);
 			}
 			console.log("Loaded "+app.images.length+" from the server.");
+			app.dropMarkers();
 
 		});
 	}
