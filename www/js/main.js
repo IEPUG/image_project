@@ -73,12 +73,17 @@ var app = {
 	},
 
 	createRelativeImage : function(remoteUrl){
+		// remoteUrl will be: https://farm9.staticflickr.com/8124/15634691977_ddb7a304a1_o.jpg
 		var localPath = "../flaskAPI/flickrAPI/images/";
+		var urlElements = remoteUrl.split("/");
+		var filename = urlElements.pop();
+
+		return localPath+filename;
 
 	},
 
 	createPopup : function(jsonData){
-		//var imgSrc = jsonData.sourceUrl;
+		var imgSrc = jsonData.sourceUrl;
 		var localImg = app.createRelativeImage(jsonData.sourceUrl);
 		// Image Details
 		var htmlString = "<div> \
@@ -87,7 +92,7 @@ var app = {
 				<li>Height: "+jsonData.imageHeight+"</li> \
 				<li>Width: "+jsonData.imageWidth+"</li> \
 				<li><a href="+imgSrc+"> \
-					<img src="+imgSrc+" height=\"200\" width=\"200\"></li> \
+					<img src="+localImg+" height=\"200\" width=\"200\"></li> \
 					</a> \
 			</ul> \
 			</div>"
@@ -124,7 +129,6 @@ var app = {
 						var that = this;
 						$.post(app.url, {"id" : img.id}, function(data){
 
-							console.log(img.id);
 							that.setPopupContent(app.createPopup(data[img.id]));
 
 						})
