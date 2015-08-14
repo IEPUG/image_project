@@ -8,7 +8,7 @@ if os.environ.get('FLASK_COVERAGE'):
 
 
 from app import create_app, db
-from app.models import Images
+from app.models import Image
 from flask.ext.script import Manager, Shell
 from flask.ext.migrate import Migrate, MigrateCommand
 
@@ -18,8 +18,8 @@ migrate = Migrate(app, db)
 
 
 def make_shell_context():
-    return dict(app=app, db=db, User=User, Follow=Follow, Role=Role,
-                Permission=Permission, Post=Post, Comment=Comment)
+    return dict(app=app, db=db, Image=Image)
+
 manager.add_command("shell", Shell(make_context=make_shell_context))
 manager.add_command('db', MigrateCommand)
 
