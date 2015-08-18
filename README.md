@@ -2,6 +2,7 @@ image_project
 =============
 
 *IEPUG Group Learning Project*
+**Summary**
 
 
 To install the module dependecies use the following (from within your virtual environment!):
