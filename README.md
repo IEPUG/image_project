@@ -3,6 +3,27 @@ image_project
 
 *IEPUG Group Learning Project*
 
+**Summary**
+
+The over all purpose of this project is to scrape some images off of flickr and extract some GPS EXIF info from them, save them to local stoarage, and insert the meta data into a sql database. Once we have the meta data stored in our database we will use flask to create a REST service to serve up the information to a web browser client. The client will display a map
+the locations where the images were taking.
+
+**Getting Started**
+
+First, if you haven't already, get a copy of the project cloned to your local environment.
+
+Create a virtualenv 
+Install the modules dependencies
+
+   pip install -r requirements/common.txt
+   
+Setup the database by doing the following:
+
+   python manage.py db init </br>
+   python manage.py db migrate </br>
+   python manage.py db upgrade
+   
+  
 
 To install the module dependecies use the following (from within your virtual environment!):
 ```
