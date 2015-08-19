@@ -14,8 +14,11 @@ First, if you haven't already, get a copy of the project cloned to your local en
 
 Create a virtualenv 
 Install the modules dependencies
+
    pip install -r requirements/common.txt
+   
 Setup the database by doing the following:
+
    python manage.py db init
    python manage.py db migrate
    python manage.py db upgrade
