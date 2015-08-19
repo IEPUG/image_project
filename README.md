@@ -19,7 +19,7 @@ Install the modules dependencies
    
 Setup the database by doing the following:
 
-   python manage.py db init
+   python manage.py db init </br>
    python manage.py db migrate
    python manage.py db upgrade
    
