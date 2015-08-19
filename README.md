@@ -5,7 +5,7 @@ image_project
 
 **Summary**
 
-The over all purpose of this project is to scrape some images off of flickr and extract some GPS EXIF info from them, save them to local stoarage, and insert the meta data into a sql data base. Once we have the meta data stored in our data base we will use flask to create a REST service to serve up the information to a web browser client. THe client will display on a map
+The over all purpose of this project is to scrape some images off of flickr and extract some GPS EXIF info from them, save them to local stoarage, and insert the meta data into a sql database. Once we have the meta data stored in our database we will use flask to create a REST service to serve up the information to a web browser client. The client will display a map
 the locations where the images were taking.
 
 To install the module dependecies use the following (from within your virtual environment!):
