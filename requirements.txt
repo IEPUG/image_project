@@ -8,7 +8,7 @@ Werkzeug==0.15.6
 aniso8601==0.92
 beautifulsoup4==4.3.2
 flickrapi==2.0
-html5lib==0.999
+html5lib==0.999999999
 itsdangerous==0.24
 oauthlib==0.7.2
 pytz==2015.2
